@@ -1,0 +1,10 @@
+Backend
+
+http://api.alina.ru/api/auth/login
+http://api.alina.ru/api/category
+
+
+Frontend
+
+/api/auth/login
+/api/category
