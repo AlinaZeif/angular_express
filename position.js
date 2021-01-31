@@ -1,19 +1,51 @@
-const express = require('express')
-const passport = require('passport')
-const controller = require("../controllers/position")
-const router = express.Router()
+const Position = require('../models/Position')
+const errorHandler = require('../utils/errorHandler')
 
 
-//localhost:5000/api/position/getByCategoryId
-router.get("/:categoryId", passport.authenticate('jwt', {session: false}), controller.getByCategoryId)
+module.exports.getByCategoryId = async function (req, res){
+    try{
+        const positions = await Position.find({
+            category: req.params.categoryId,
+            user: req.user.id
+        })
+        res.status(200).json(positions)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/position/create
-router.post("/", passport.authenticate('jwt', {session: false}), controller.create)
+module.exports.create = async function(req, res){
+    try{
+        const position = await new Position({
+            name: req.body.name,
+            cost: req.body.cost,
+            category: req.body.category,
+            user: req.user.id
+        }).save()
+        res.status(201).json(position)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/position/update
-router.patch("/:id", passport.authenticate('jwt', {session: false}), controller.update)
+module.exports.remove =  async function(req, res){
+    try{
+        await Position.remove({_id: req.params.id})
+        res.status(200).json({message: 'The position was deleted.'})
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/position/remove
-router.delete("/:id", passport.authenticate('jwt', {session: false}), controller.remove)
-
-module.exports = router
+module.exports.update =  async function(req, res){
+    try{
+        const position = await Position.findOneAndUpdate(
+            {_id: req.params.id},
+            {$set: req.body},
+            {new: true}
+        )
+        res.status(200).json(position)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}

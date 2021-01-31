@@ -1,24 +1,68 @@
-const express = require('express')
-const passport = require('passport')
-const upload = require('../middleware/upload')
-const controller = require("../controllers/category")
-const router = express.Router()
+const Category = require("../models/Category")
+const Position = require('../models/Position')
+const errorHandler = require('../utils/errorHandler')
 
-//localhost:5000/api/category/getAll
-router.get("/", passport.authenticate('jwt', {session: false}), controller.getAll)
+module.exports.getAll = async function(req, res){
+    try{
+        const categories = await Category.find({user: req.user.id})
+        res.status(200).json(categories)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/category/getById
-router.get("/:id",  passport.authenticate('jwt', {session: false}), controller.getById)
+module.exports.getById =  async function(req, res){
+    try{
+        const category = await Category.findById( req.params.id)
+        res.status(200).json(category)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/category/remove
-router.delete("/:id",  passport.authenticate('jwt', {session: false}), controller.remove)
+module.exports.remove =  async function(req, res){
+    try{
+        await Category.remove({_id: req.params.id})
+        await Position.remove({category: req.params.id})
+        res.status(200).json({message: 'The category was deleted.'})
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/category/create
-router.post("/",  passport.authenticate('jwt', {session: false}), upload.single('image'), controller.create)
+module.exports.create =  async function(req, res){
+   
+    const category = new Category({
+        name: req.body.name,
+        user: req.user.id,
+        imageSrc: req.file ? req.file.path : ''
+    })
+    try{
+        await category.save()
+        res.status(201).json(category)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-//localhost:5000/api/category/update
-router.patch("/:id",  passport.authenticate('jwt', {session: false}), upload.single('image'), controller.update)
+module.exports.update =  async function(req, res){
+    const updated = {
+        name: req.body.name
+    }
+    
+    if(req.file){
+        updated.imageSrc = req.file.path
+    }
 
+    try{
+        const category = await Category.findOneAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+        res.status(200).json(category)
+    }catch(e){
+        errorHandler(res, e)
+    }
+}
 
-
-module.exports = router
