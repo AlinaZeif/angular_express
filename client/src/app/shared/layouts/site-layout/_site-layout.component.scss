@@ -1,0 +1,30 @@
+
+
+.a-sidenav{
+    transform:translateX(0)!important;
+    width:250px!important
+}
+.a-sidenav h4{
+    padding:0 30px;opacity:.8;
+    font-size:2rem
+}
+.a-sidenav .bold.last{
+    position:absolute;
+    bottom:62px;width:100%
+}
+
+.collection-item-icon{
+    display:flex!important;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    z-index:10
+}
+.collection-item-icon i.material-icons:hover{
+    color:#f44336!important;
+    transition:.3s color
+}
+
+.pl0{
+    padding-left:0!important
+}
