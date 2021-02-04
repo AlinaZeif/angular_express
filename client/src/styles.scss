@@ -1,21 +1,22 @@
-//@import "~materialize-css/dist/css/materialize.min.css";
+@import "materialize-src/sass/components/color-variables";
+// $primary-color: color("blue", "lighten-2") !default;
+// $secondary-color: color("yellow", "base") !default;
+@import 'materialize-src/sass/materialize.scss';
 
 
-// @import "theme/styles.min.css";
-
-// @import "analytics-page.component";
-// @import "categories-page.component";
-// @import "categories-form.component";
-// @import "positions-form.component";
-// @import "history-page.component";
-// @import "history-filter.component";
-// @import "history-list.component";
-// @import "login-page.component";
-// @import "order-page.component";
-// @import "order-categories.component";
-// @import "order-positions.component";
-// @import "overview-page.component";
-// @import "register-page.component";
-// @import "auth-layout.component";
-// @import "site-layout.component";
-// @import "loader.component";
+@import "./app/analytics-page/analytics-page.component";
+@import "./app/categories-page/categories-page.component";
+@import "./app/categories-page/categories-form/categories-form.component";
+@import "./app/categories-page/categories-form/positions-form/positions-form.component";
+@import "./app/history-page/history-page.component";
+@import "./app/history-page/history-filter/history-filter.component";
+@import "./app/history-page/history-list/history-list.component";
+@import "./app/login-page/login-page.component";
+@import "./app/order-page/order-page.component";
+@import "./app/order-page/order-categories/order-categories.component";
+@import "./app/order-page/order-positions/order-positions.component";
+@import "./app/overview-page/overview-page.component";
+@import "./app/register-page/register-page.component";
+@import "./app/shared/layouts/auth-layout/auth-layout.component";
+@import "./app/shared/layouts/site-layout/site-layout.component";
+@import "./app/shared/components/loader/loader.component";
